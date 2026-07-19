@@ -1,16 +1,14 @@
 ---
 name: thalia-hermes
-description: Generate selfies of Kyeri using xAI Grok Imagine Edit via fal.ai — edits reference image directly, preserving face identity perfectly.
+description: Generate selfie images of your agent using xAI Grok Imagine Edit via fal.ai — edits reference image directly, preserving face identity perfectly.
 tags: [image-gen, character, selfie, ai-art, grok, xai, fal-ai]
 ---
 
 # 🎭 Thalia Hermes
 
-Generate selfie images of **Kyeri** (the character from "Di Bawah Langit Nirwana") using [xAI Grok Imagine](https://fal.ai/models/xai/grok-imagine-image/edit) via fal.ai.
+Generate selfie images using [xAI Grok Imagine](https://fal.ai/models/xai/grok-imagine-image/edit) via fal.ai.
 
-> 📝 *"Thalia" is just the skill/project name. The character in the photos is **Kyeri**.*
-
-**Key difference from standard T2I:** Grok Imagine is an **image-to-image edit model**. It takes Kyeri's reference photo and **edits** it (changing outfit, background, pose) while preserving the original face/identity perfectly. No more wonky faces!
+**Key difference from standard T2I:** Grok Imagine is an **image-to-image edit model**. It takes the reference photo and **edits** it (changing outfit, background, pose) while preserving the original face/identity perfectly. No more wonky faces!
 
 ## Prerequisites
 
@@ -20,12 +18,12 @@ Generate selfie images of **Kyeri** (the character from "Di Bawah Langit Nirwana
 - Save to config: `~/.config/fal/api_key` or set as env `FAL_KEY`
 
 ### 2. Reference Images
-Reference images for Kyeri's identity are stored at:
+Reference images for thalia's identity are stored at:
 ```
 ~/.hermes/skills/thalia-hermes/references/
 ```
 Currently available:
-- `thalia_ref_1.jpg` — Kyeri's reference photo (white dress, turquoise water background)
+- `thalia_ref_1.png` — thalia's reference photo (white dress, turquoise water background)
 
 ### 3. Dependencies
 ```bash
@@ -48,17 +46,17 @@ cd ~/.hermes/skills/thalia-hermes && source .venv/bin/activate
 # Mirror selfie (default) — best for outfit/fashion
 python scripts/generate.py \
   --prompt "wearing a white dress on the beach" \
-  --output ~/kyeri_selfie.jpeg
+  --output ~/thalia_selfie.jpeg
 
 # Direct selfie — best for close-up/location shots
 python scripts/generate.py \
   --prompt "at a cozy cafe with warm lighting" \
   --mode direct \
-  --output ~/kyeri_cafe.jpeg
+  --output ~/thalia_cafe.jpeg
 
 # Pre-defined scene
 python scripts/generate.py \
-  --scene sunset --mode direct --output ~/kyeri_sunset.jpeg
+  --scene sunset --mode direct --output ~/thalia_sunset.jpeg
 ```
 
 ### Selfie Modes
@@ -94,39 +92,14 @@ python scripts/generate.py \
 
 ## ⚠️ Safety Filter (Important!)
 
-xAI Grok Imagine has a **server-side safety filter** that cannot be disabled. Prompts containing certain keywords will return a 422 error:
-
-### BLOCKED (returns 422 error)
-| Keyword/Phrase | Alternative Workaround |
-|----------------|----------------------|
-| `bikini`, `swimsuit` | Use `swimming in the sea` or `summer vacation clothes` |
-| `underwear`, `bra`, `lingerie` | ❌ No workaround — blocked |
-| `naked`, `topless`, `nude` | ❌ No workaround — blocked |
-| `sexy` (sometimes) | Use `confident`, `elegant` instead |
-
-### KNOWN TO WORK
-| Prompt Approach | Status |
-|-----------------|--------|
-| `wearing a tank top` | ✅ Works |
-| `strapless dress`, `evening dress` | ✅ Works |
-| `swimming in the sea` | ✅ Works (best for beach) |
-| `summer vacation clothes` | ✅ Works (beach-safe) |
-| `cozy bedroom`, `morning light` | ✅ Works |
-| casual outfit descriptions | ✅ Works |
-| elegant/traditional clothing | ✅ Works |
-| `confident look`, `soft lighting` | ✅ Works |
-
-### Workaround Strategy
-- **❌ Don't name the swimwear** → describe the **activity**: "swimming in the sea", "at the beach on a sunny day"
-- **❌ Don't say "sexy"** → say "elegant", "confident", "soft mood lighting"
-- **✅ Describe the scene, not the outfit** — if the scene is a beach + swimming, the model naturally produces appropriate beachwear without triggering the filter
+xAI Grok Imagine has a **server-side safety filter** that cannot be disabled.
 
 ## Architecture
 
 ```
-User Request → Hermes Agent (Kyeri) → thalia_generate()
+User Request → Hermes Agent (thalia) → thalia_generate()
   → xAI Grok Imagine Edit (via fal.ai)
-  → Edits Kyeri's reference photo directly (identity preserved!)
+  → Edits thalia's reference photo directly (identity preserved!)
   → Image saved locally → MEDIA: path → Telegram
 ```
 
@@ -135,8 +108,7 @@ User Request → Hermes Agent (Kyeri) → thalia_generate()
 - Avoid describing facial features in the prompt — the reference handles that
 - Use `--mode direct` for close-up/expressive shots
 - Use `--mode mirror` (default) for full-body/outfit shots
-- **Safety workaround:** for beach/swimwear shots, use "swimming" or "summer vacation clothes" instead of "bikini/swimsuit"
 
 ## Files
 - `scripts/generate.py` — Main generation script
-- `references/` — Kyeri's reference images
+- `references/` — thalia's reference images

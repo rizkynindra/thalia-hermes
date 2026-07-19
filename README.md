@@ -1,12 +1,12 @@
 # 🎭 Thalia Hermes
 
-> Generate selfie images of **Kyeri** using **xAI Grok Imagine** via fal.ai — AI image-to-image editing that preserves face identity perfectly.
+> Generate selfie images of your agent.
 
-![Thalia Hermes Demo](references/thalia_ref_1.jpg)
+![Thalia Hermes Demo](references/thalia_ref_1.png)
 
 ## ✨ How It Works
 
-Unlike standard AI image generators that create images from scratch (where faces often look different), Thalia Hermes uses **Grok Imagine's image-to-image editing**. It takes Kyeri's reference photo and **edits** it — changing outfit, background, and pose — while keeping the original face and identity intact.
+Thalia Hermes uses **Grok Imagine's image-to-image editing**. It can change outfit, background, and pose while keeping the original face and identity intact.
 
 ## 🚀 Features
 
@@ -44,17 +44,17 @@ cp your_reference_photo.jpg references/thalia_ref_1.jpg
 # Mirror selfie (outfit/fashion focus)
 python scripts/generate.py \
   --prompt "wearing a white dress on the beach" \
-  --output kyeri_selfie.jpeg
+  --output thalia_selfie.jpeg
 
 # Direct selfie (close-up/location focus)
 python scripts/generate.py \
   --prompt "at a cozy cafe with warm lighting" \
   --mode direct \
-  --output kyeri_cafe.jpeg
+  --output thalia_cafe.jpeg
 
 # Pre-defined scene
 python scripts/generate.py \
-  --scene sunset --mode direct --output kyeri_sunset.jpeg
+  --scene sunset --mode direct --output thalia_sunset.jpeg
 ```
 
 ### Selfie Modes
@@ -112,9 +112,6 @@ User Request → generate.py
 
 xAI Grok Imagine has a **server-side safety filter** that cannot be disabled. Content containing nudity, underwear, or explicit swimwear will return a `422 content_policy_violation` error. Use descriptive prompts focused on outfits, locations, and activities that pass the filter.
 
-**Works:** summer clothes, tanktop, strapless dress, swimming, casual wear, elegant dress
-**Blocked:** bikini, underwear, bra, swimsuit, revealing lingerie
-
 ## 📁 Project Structure
 
 ```
@@ -126,7 +123,7 @@ thalia-hermes/
 ├── scripts/
 │   └── generate.py              # Main generation script
 └── references/
-    ├── thalia_ref_1.jpg         # Kyeri's reference photo
+    ├── thalia_ref_1.jpg         # thalia's reference photo
     └── grok-imagine-api.md      # Grok Imagine API reference
 ```
 
@@ -134,7 +131,6 @@ thalia-hermes/
 
 - Output images are ~880×1168 (portrait orientation)
 - Generation time: ~15-30 seconds
-- The name "Thalia" is the project/skill name. The character in the photos is **Kyeri**.
 
 ## 📄 License
 

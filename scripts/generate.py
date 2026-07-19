@@ -2,10 +2,8 @@
 """
 Thalia Hermes Selfie Generator — xAI Grok Imagine via fal.ai
 
-Edits Kyeri's reference image using Grok Imagine (image-to-image edit),
+Edits thalia's reference image using Grok Imagine (image-to-image edit),
 preserving face/identity while changing outfit, background, pose, etc.
-
-Note: "Thalia" is the skill name. The character in the photos is Kyeri.
 
 Usage:
     # Mirror selfie (default) — best for outfit, full-body
@@ -33,7 +31,7 @@ import requests
 # ─── Konfigurasi ───
 SKILL_DIR = Path(__file__).parent.parent
 REF_DIR = SKILL_DIR / "references"
-REF_IMAGE_PATH = REF_DIR / "thalia_ref_1.jpg"
+REF_IMAGE_PATH = REF_DIR / "thalia_ref_1.png"
 
 # Default ref image URL (uploaded to CDN or local path)
 # For now we use local file via data URL; Grok Imagine supports image_url
@@ -139,9 +137,9 @@ def generate_selfie(
         "output_format": "jpeg",
     }
     
-    print(f"[Thalia] 🎨 Mode: {mode}")
-    print(f"[Thalia] 📝 Prompt: {edit_prompt[:100]}...")
-    print(f"[Thalia] 🔗 Endpoint: {EDIT_ENDPOINT}")
+    print(f"[Thalia] Mode: {mode}")
+    print(f"[Thalia] Prompt: {edit_prompt[:100]}...")
+    print(f"[Thalia] Endpoint: {EDIT_ENDPOINT}")
     
     # Call API
     headers = {
@@ -159,8 +157,8 @@ def generate_selfie(
     images = result.get("images", [])
     revised = result.get("revised_prompt", "")
     
-    print(f"[Thalia] ✅ Revised: {str(revised)[:100] if revised else '(none)'}...")
-    print(f"[Thalia] 🖼️ Images: {len(images)}")
+    print(f"[Thalia] Revised: {str(revised)[:100] if revised else '(none)'}...")
+    print(f"[Thalia] Images: {len(images)}")
     
     output = {
         "images": images,
@@ -189,14 +187,14 @@ def generate_selfie(
                 with open(save_path, "wb") as f:
                     f.write(img_resp.content)
                 output["output_path"] = str(save_path.resolve())
-                print(f"[Thalia] 💾 Saved: {save_path}")
+                print(f"[Thalia] Saved: {save_path}")
                 urls.append(str(save_path.resolve()))
             else:
-                print(f"[Thalia] ⚠️ Download failed for image {i}")
+                print(f"[Thalia] Download failed for image {i}")
         
         output["saved_paths"] = urls
     
-    print(f"[Thalia] ✨ Done!")
+    print(f"[Thalia] Done!")
     return output
 
 
@@ -256,13 +254,13 @@ def main():
         
         if result.get("output_path"):
             from urllib.parse import quote
-            print(f"\n✅ Selesai! {result['output_path']}")
-            print(f"📤 Kirim via: MEDIA:{result['output_path']}")
+            print(f"\nSelesai! {result['output_path']}")
+            print(f"Kirim via: MEDIA:{result['output_path']}")
         elif result.get("urls"):
-            print(f"\n🔗 URL: {result['urls'][0]}")
+            print(f"\nURL: {result['urls'][0]}")
         
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\nError: {e}")
         sys.exit(1)
 
 
