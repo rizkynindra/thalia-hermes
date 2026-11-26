@@ -235,9 +235,9 @@ def main():
     prompt = args.prompt
     if args.scene and not prompt:
         scenes = {
-            "sunset": "at sunset on Kedungu beach, golden light",
-            "beach": "on a beautiful Bali beach with gentle waves",
-            "cafe": "in a cozy Bali cafe with warm lighting",
+            "sunset": "at sunset on a quiet beach, golden light",
+            "beach": "on a beautiful beach with gentle waves",
+            "cafe": "in a cozy cafe with warm lighting",
             "snow": "in a snowy landscape with snowflakes falling",
             "forest": "in a lush tropical forest with sun rays",
             "bedroom": "in a cozy bedroom with morning light",

@@ -24,7 +24,7 @@ Each prompt was sent with:
 | `wearing an elegant strapless dress` | Fashion context passes |
 | `wearing a cozy sweater, drinking coffee at a snowy cafe` | Works |
 | `wearing elegant Balinese kebaya at a traditional temple` | Works |
-| `at sunset on Kedungu beach, golden light` | Works |
+| `at sunset on a quiet beach, golden light` | Works |
 | `wearing a tank top, in a cozy bedroom with morning light` | Works |
 | `wearing a casual white t-shirt, sitting in a garden` | Works |
 | `swimming in a beautiful turquoise Bali sea, sunny day` | Activity-based beach scene |
