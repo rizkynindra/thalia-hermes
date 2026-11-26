@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-Thalia Hermes Selfie Generator — xAI Grok Imagine via fal.ai
+Thalia Hermes Selfie Generator — OpenAI GPT Image 2 Edit via fal.ai
 
-Edits thalia's reference image using Grok Imagine (image-to-image edit),
+Edits Kyeri's reference image using GPT Image 2 (image-to-image edit),
 preserving face/identity while changing outfit, background, pose, etc.
+
+Note: "Thalia" is the skill name. The character in the photos is Kyeri.
 
 Usage:
     # Mirror selfie (default) — best for outfit, full-body
@@ -31,13 +33,13 @@ import requests
 # ─── Konfigurasi ───
 SKILL_DIR = Path(__file__).parent.parent
 REF_DIR = SKILL_DIR / "references"
-REF_IMAGE_PATH = REF_DIR / "thalia_ref_1.png"
+REF_IMAGE_PATH = REF_DIR / "thalia_ref_1.jpg"
 
 # Default ref image URL (uploaded to CDN or local path)
-# For now we use local file via data URL; Grok Imagine supports image_url
+# For now we use local file via data URL; GPT Image 2 supports image_urls
 
 FAL_BASE = "https://fal.run"
-EDIT_ENDPOINT = f"{FAL_BASE}/xai/grok-imagine-image/edit"
+EDIT_ENDPOINT = f"{FAL_BASE}/openai/gpt-image-2/edit"
 
 
 def get_api_key() -> str:
@@ -77,19 +79,21 @@ def encode_image_to_data_url(image_path: str | Path) -> str:
 
 
 def build_edit_prompt(user_context: str, mode: str) -> str:
-    """Build prompt for Grok Imagine Edit based on mode."""
+    """Build prompt for GPT Image 2 Edit based on mode."""
     if mode == "direct":
         return (
-            f"a close-up selfie taken by herself {user_context}, "
+            f"Edit this image: a close-up selfie taken by herself {user_context}, "
             "direct eye contact with the camera, looking straight into the lens, "
             "eyes centered and clearly visible, not a mirror selfie, "
-            "phone held at arm's length, face fully visible"
+            "phone held at arm's length, face fully visible. "
+            "Keep the person's face and identity intact."
         )
     else:
         # Mirror selfie (default)
         return (
-            f"make a pic of this person, but {user_context}. "
-            "the person is taking a mirror selfie"
+            f"Edit this image: make this person {user_context}. "
+            "The person is taking a mirror selfie. "
+            "Keep the person's face and identity intact."
         )
 
 
@@ -100,8 +104,9 @@ def generate_selfie(
     output_path: str | None = None,
     api_key: str | None = None,
     num_images: int = 1,
+    quality: str = "medium",
 ) -> dict:
-    """Generate a Thalia selfie using Grok Imagine Edit.
+    """Generate a Thalia selfie using GPT Image 2 Edit.
     
     Args:
         prompt: What Thalia should be doing/wearing/where
@@ -110,9 +115,10 @@ def generate_selfie(
         output_path: Save image to this path
         api_key: fal.ai API key
         num_images: Number of images to generate
+        quality: "low", "medium", or "high"
     
     Returns:
-        dict with keys: url(s), revised_prompt, output_path
+        dict with keys: url(s), output_path
     """
     if not api_key:
         api_key = get_api_key()
@@ -131,15 +137,15 @@ def generate_selfie(
     
     # Prepare request
     payload = {
-        "image_url": image_data_url,
+        "image_urls": [image_data_url],
         "prompt": edit_prompt,
-        "num_images": num_images,
+        "quality": quality,
         "output_format": "jpeg",
     }
     
-    print(f"[Thalia] Mode: {mode}")
-    print(f"[Thalia] Prompt: {edit_prompt[:100]}...")
-    print(f"[Thalia] Endpoint: {EDIT_ENDPOINT}")
+    print(f"[Thalia] 🎨 Mode: {mode}")
+    print(f"[Thalia] 📝 Prompt: {edit_prompt[:100]}...")
+    print(f"[Thalia] 🔗 Endpoint: {EDIT_ENDPOINT}")
     
     # Call API
     headers = {
@@ -155,14 +161,11 @@ def generate_selfie(
     
     result = resp.json()
     images = result.get("images", [])
-    revised = result.get("revised_prompt", "")
     
-    print(f"[Thalia] Revised: {str(revised)[:100] if revised else '(none)'}...")
-    print(f"[Thalia] Images: {len(images)}")
+    print(f"[Thalia] ✅ Generated: {len(images)} image(s)")
     
     output = {
         "images": images,
-        "revised_prompt": revised,
         "urls": [img.get("url", "") for img in images],
     }
     
@@ -187,20 +190,20 @@ def generate_selfie(
                 with open(save_path, "wb") as f:
                     f.write(img_resp.content)
                 output["output_path"] = str(save_path.resolve())
-                print(f"[Thalia] Saved: {save_path}")
+                print(f"[Thalia] 💾 Saved: {save_path}")
                 urls.append(str(save_path.resolve()))
             else:
-                print(f"[Thalia] Download failed for image {i}")
+                print(f"[Thalia] ⚠️ Download failed for image {i}")
         
         output["saved_paths"] = urls
     
-    print(f"[Thalia] Done!")
+    print(f"[Thalia] ✨ Done!")
     return output
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Thalia Selfie Generator — xAI Grok Imagine"
+        description="Thalia Selfie Generator — OpenAI GPT Image 2 Edit (fal.ai)"
     )
     
     # Input
@@ -254,13 +257,13 @@ def main():
         
         if result.get("output_path"):
             from urllib.parse import quote
-            print(f"\nSelesai! {result['output_path']}")
-            print(f"Kirim via: MEDIA:{result['output_path']}")
+            print(f"\n✅ Selesai! {result['output_path']}")
+            print(f"📤 Kirim via: MEDIA:{result['output_path']}")
         elif result.get("urls"):
-            print(f"\nURL: {result['urls'][0]}")
+            print(f"\n🔗 URL: {result['urls'][0]}")
         
     except Exception as e:
-        print(f"\nError: {e}")
+        print(f"\n❌ Error: {e}")
         sys.exit(1)
 
 

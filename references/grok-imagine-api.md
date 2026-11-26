@@ -52,8 +52,11 @@ Returns HTTP 422 with `content_policy_violation` for blocked content.
 Cannot be disabled — server-side enforcement by xAI.
 
 ## Notes
+- `revised_prompt` is typically `null` for Grok Imagine (unlike Flux/other models)
 - No `seed` parameter supported (unlike flux-pro)
-- `enable_safety_checker` parameter has no effect — xAI enforces server-side
+- `enable_safety_checker` parameter has **no effect** — xAI enforces server-side content policy
+- Safety filter is strict: blocks `bikini`, `swimsuit`, `one-piece`, `underwear`, `lingerie`, `nude`
 - Works with data URLs (base64) up to ~10MB
-- Typical output: ~880x1168 (portrait orientation)
+- Typical output: ~880×1168 (portrait orientation)
 - Generation time: ~15-30 seconds
+- HTTP 422 with `content_policy_violation` — prompt was blocked; no way to bypass
