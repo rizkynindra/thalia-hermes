@@ -2,14 +2,15 @@
 """
 Thalia Hermes Selfie Generator — OpenAI GPT Image 2 Edit via fal.ai
 
-Edits Kyeri's reference image using GPT Image 2 (image-to-image edit),
+Edits a character reference image using GPT Image 2 (image-to-image edit),
 preserving face/identity while changing outfit, background, pose, etc.
 
-Note: "Thalia" is the skill name. The character in the photos is Kyeri.
+Note: "Thalia" is the project name — point REF_IMAGE_PATH at your own
+character reference photo.
 
 Usage:
     # Mirror selfie (default) — best for outfit, full-body
-    python generate.py --prompt "wearing a white dress on the beach"
+    python generate.py --prompt "wearing a summer dress by the sea"
     
     # Direct selfie — best for close-up, location
     python generate.py --prompt "at a cozy cafe" --mode direct
@@ -18,7 +19,7 @@ Usage:
     python generate.py --scene sunset --mode direct
     
     # With custom output path
-    python generate.py --prompt "wearing kebaya" --output ~/thalia_baru.png
+    python generate.py --prompt "wearing a formal dress" --output ./out/look_01.png
 """
 
 import argparse
